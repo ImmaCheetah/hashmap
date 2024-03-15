@@ -2,6 +2,12 @@ import LinkedList from "./linked-list.mjs";
 import { Node } from "./linked-list.mjs";
 
 function HashMap() {
+    let bucket = [];
+    let bucketSize = 16;
+    for (let i = 0; i < bucketSize; i++) {
+        bucket.push(null);
+    }
+
     const hash = (key) => {
         let hashCode = 0;
            
@@ -14,13 +20,16 @@ function HashMap() {
       }
       
     return { 
-        hash,
+        hash, bucket,
     }
      
 }
 
 let myList = LinkedList('gdagds');
 console.log(myList);
+
+let hashmap = HashMap();
+console.log(hashmap.bucket);
 
 /*
 Hash table
