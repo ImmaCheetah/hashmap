@@ -3,7 +3,6 @@ import { Node } from "./linked-list.mjs";
 
 function HashMap() {
     
-
     const hash = (key) => {
         let hashCode = 0;
            
@@ -70,15 +69,20 @@ function HashMap() {
             return false;
         } else {
             let currentNode = bucket[currentHashcode].head;
-
-            while (currentNode != null) {
-                if (currentNode.key === key) {
+            
+            if (currentNode.key === key) {
+                bucket[currentHashcode].head = currentNode.nextNode;
+                return true;
+            } else {
+                while (currentNode != null) {
+                    if (currentNode.nextNode.key === key) {
+                        currentNode = currentNode.nextNode.nextNode;
+                        return;
+                    }
                     currentNode = currentNode.nextNode;
                 }
             }
         }
-
-
     }
 
     const length = () => {
@@ -92,7 +96,7 @@ function HashMap() {
     }
 
     const clear = () => {
-        for (let i = 0; i < bucketSize; i++) {
+        for (let i = 0; i < capacity; i++) {
             bucket[i] = null;
         }
     }
@@ -151,8 +155,9 @@ function HashMap() {
     }
 
     let bucket = [];
-    let bucketSize = 16;
-    for (let i = 0; i < bucketSize; i++) {
+    let loadFactor = 0.8;
+    let capacity = 16;
+    for (let i = 0; i < capacity; i++) {
         bucket.push(null);
     }
       
@@ -165,10 +170,14 @@ function HashMap() {
 let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
+hashmap.set('dgsagg', 'SOMETHING ELSE');
+hashmap.set('a', 'ANOTHER THING');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.remove('bamf'));
-// console.log(hashmap.append('yay', 'BUCKETS'));
-// console.log(hashmap.bucket);
+console.log(hashmap.remove('dgsagg'));
+console.log(hashmap.bucket);
+console.log(hashmap.entries());
+
+
 
 /*
 Hash table
