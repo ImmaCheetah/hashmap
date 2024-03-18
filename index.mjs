@@ -21,7 +21,6 @@ function HashMap() {
     
     const set = (key, value) => {
         let currentHashcode = hash(key);
-        // console.log(currentHashcode);
 
         if (bucket[currentHashcode] === null) {
             bucket[currentHashcode] = LinkedList(key, value);    
@@ -48,9 +47,26 @@ function HashMap() {
         
         return null;
     }
+    
+    const has = (key) => {
+        let currentHashcode = hash(key);
+
+        if (bucket[currentHashcode] === null) return false;
+
+        let currentNode = bucket[currentHashcode].head;
+
+        while (currentNode != null) {
+            if (currentNode.key == key) {
+                return true;
+            }
+            currentNode = currentNode.nextNode;
+        }
+        
+        return false;
+    }
       
     return { 
-        hash, bucket, set, get
+        hash, bucket, set, get, has
     }
      
 }
@@ -59,7 +75,7 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.get('bamg'));
+console.log(hashmap.has('bam'));
 // console.log(hashmap.append('yay', 'BUCKETS'));
 // console.log(hashmap.bucket);
 
