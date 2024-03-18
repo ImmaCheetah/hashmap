@@ -76,7 +76,7 @@ function HashMap() {
             } else {
                 while (currentNode != null) {
                     if (currentNode.nextNode.key === key) {
-                        currentNode = currentNode.nextNode.nextNode;
+                        currentNode.nextNode = currentNode.nextNode.nextNode;
                         return;
                     }
                     currentNode = currentNode.nextNode;
@@ -173,7 +173,7 @@ hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('dgsagg', 'SOMETHING ELSE');
 hashmap.set('a', 'ANOTHER THING');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.remove('dgsagg'));
+console.log(hashmap.remove('a'));
 console.log(hashmap.bucket);
 console.log(hashmap.entries());
 
