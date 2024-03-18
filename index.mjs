@@ -13,22 +13,38 @@ function HashMap() {
            
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-          hashCode = primeNumber * hashCode + key.charCodeAt(i) % 16;
+          hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % 16;
         }
      
         return hashCode;
       }
+    
+    const set = (key, value) => {
+        let currentHashcode = hash(key);
+        // console.log(currentHashcode);
+
+        if (bucket[currentHashcode] === null) {
+            bucket[currentHashcode] = LinkedList(key, value);    
+        } else if (bucket[currentHashcode].containsKey(key)) {
+            bucket[currentHashcode].updateValue(key, value);
+        } else {
+            bucket[currentHashcode].append(key, value);
+        }
+        // console.log(bucket[currentHashcode].head.key);
+
+    }
       
     return { 
-        hash, bucket,
+        hash, bucket, set
     }
      
 }
 
-let myList = LinkedList('gdagds');
-console.log(myList);
-
 let hashmap = HashMap();
+hashmap.set('yay', 'BUCKETS');
+hashmap.set('yay', 'YAYAYAYYA');
+hashmap.set('bam', 'kablooey');
+// console.log(hashmap.append('yay', 'BUCKETS'));
 console.log(hashmap.bucket);
 
 /*

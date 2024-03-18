@@ -1,7 +1,7 @@
 // Factory function for a list
-export default function LinkedList(head, ...moreValues) {
+export default function LinkedList(head, keyValue, ...moreValues) {
 
-    const append = (value) => {
+    const append = (key, value) => {
         // Set the head of node to a temp variable
         // Set current node to the next node if it is not null
         // If it is, set that node to the new value
@@ -9,7 +9,7 @@ export default function LinkedList(head, ...moreValues) {
         while (currentNode.nextNode != null) {
             currentNode = currentNode.nextNode;
         }
-        currentNode.nextNode = Node(value);
+        currentNode.nextNode = Node(key, value);
 
     }
     // Set the head to the new value and next node to the head
@@ -68,7 +68,7 @@ export default function LinkedList(head, ...moreValues) {
     }
     // Use same format from append to iterate over objects
     // Check currentNode for null instead of nextNode to not skip over last object
-    const contains = (value) => {
+    const containsValue = (value) => {
         let currentNode = head;
         while (currentNode != null) {
 
@@ -81,6 +81,33 @@ export default function LinkedList(head, ...moreValues) {
         return false;
 
     }
+
+    const containsKey = (key) => {
+        let currentNode = head;
+        while (currentNode != null) {
+
+            if (currentNode.key == key) {
+                return true;
+            }
+            currentNode = currentNode.nextNode;
+        }
+
+        return false;
+
+    }
+
+    const updateValue = (key, value) => {
+        let currentNode = head;
+
+        while (currentNode != null) {
+
+            if (currentNode.key == key) {
+                currentNode.value = value;
+            } 
+            currentNode = currentNode.nextNode;
+        }
+    }
+
     // Declare index variable
     // Create temp variable for head
     // Create loop that checks the value of currentNode as long as it's not null then move to next node
@@ -110,7 +137,7 @@ export default function LinkedList(head, ...moreValues) {
     }
 
     if (head !== undefined) {
-        head = Node(head);
+        head = Node(head, keyValue);
     } else {
         head = null;
     }
@@ -119,10 +146,14 @@ export default function LinkedList(head, ...moreValues) {
     moreValues.forEach((value) => append(value));
 
 
-    return { head, append, prepend, getHead, tail, size, contains, at, pop, find, toString }
+    return { head, keyValue, append, prepend, getHead, tail, size, containsValue, containsKey, updateValue, at, pop, find, toString }
 }
 
 // Factory function for a node that returns a value and nextNode which are null by default
-export function Node(value = null, nextNode = null) {
-    return { value, nextNode }
+export function Node(key = null, value = null, nextNode = null) {
+    return { key, value, nextNode }
 }
+
+let myList = LinkedList('something', 'something else');
+myList.updateValue('sometehing', 'damn');
+console.log(myList);
