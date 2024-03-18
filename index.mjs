@@ -85,6 +85,23 @@ function HashMap() {
         }
     }
 
+    const keys = () => {
+        let keysArray = [];
+
+        bucket.forEach((element) => {
+            if (element != null) {
+                let currentNode = element.head;
+    
+                while (currentNode != null) {
+                    keysArray.push(currentNode.key);
+                    currentNode = currentNode.nextNode;
+                }
+            }
+        })
+
+        return keysArray;
+    }
+
     let bucket = [];
     let bucketSize = 16;
     for (let i = 0; i < bucketSize; i++) {
@@ -92,7 +109,7 @@ function HashMap() {
     }
       
     return { 
-        hash, bucket, set, get, has, length, clear
+        hash, bucket, set, get, has, length, clear, keys
     }
      
 }
@@ -101,9 +118,9 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.clear());
+console.log(hashmap.keys());
 // console.log(hashmap.append('yay', 'BUCKETS'));
-console.log(hashmap.bucket);
+// console.log(hashmap.bucket);
 
 /*
 Hash table
