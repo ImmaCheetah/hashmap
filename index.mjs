@@ -66,6 +66,18 @@ function HashMap() {
 
         if (bucket[currentHashcode] === null) return false;
 
+        if (!bucket[currentHashcode].containsKey(key)) {
+            return false;
+        } else {
+            let currentNode = bucket[currentHashcode].head;
+
+            while (currentNode != null) {
+                if (currentNode.key === key) {
+                    currentNode = currentNode.nextNode;
+                }
+            }
+        }
+
 
     }
 
@@ -102,6 +114,42 @@ function HashMap() {
         return keysArray;
     }
 
+    const values = () => {
+        let valuesArray = [];
+
+        bucket.forEach((element) => {
+            if (element != null) {
+                let currentNode = element.head;
+    
+                while (currentNode != null) {
+                    valuesArray.push(currentNode.value);
+                    currentNode = currentNode.nextNode;
+                }
+            }
+        })
+
+        return valuesArray;
+    }
+
+    const entries = () => {
+        let entriesArray = [];
+
+        bucket.forEach((element) => {
+            if (element != null) {
+                let currentNode = element.head;
+                
+                while (currentNode != null) {
+                    let keyValueArray = [];
+                    keyValueArray.push(currentNode.key, currentNode.value);
+                    entriesArray.push(keyValueArray);
+                    currentNode = currentNode.nextNode;
+                }
+            }
+        })
+
+        return entriesArray;
+    }
+
     let bucket = [];
     let bucketSize = 16;
     for (let i = 0; i < bucketSize; i++) {
@@ -109,7 +157,7 @@ function HashMap() {
     }
       
     return { 
-        hash, bucket, set, get, has, length, clear, keys
+        hash, bucket, set, get, has, remove, length, clear, keys, values, entries
     }
      
 }
@@ -118,7 +166,7 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.keys());
+console.log(hashmap.remove('bamf'));
 // console.log(hashmap.append('yay', 'BUCKETS'));
 // console.log(hashmap.bucket);
 
