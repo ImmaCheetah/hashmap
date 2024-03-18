@@ -30,12 +30,27 @@ function HashMap() {
         } else {
             bucket[currentHashcode].append(key, value);
         }
-        // console.log(bucket[currentHashcode].head.key);
+    }
 
+    const get = (key) => {
+        let currentHashcode = hash(key);
+
+        if (bucket[currentHashcode] === null) return null;
+
+        let currentNode = bucket[currentHashcode].head;
+
+        while (currentNode != null) {
+            if (currentNode.key == key) {
+                return currentNode.value;
+            }
+            currentNode = currentNode.nextNode;
+        }
+        
+        return null;
     }
       
     return { 
-        hash, bucket, set
+        hash, bucket, set, get
     }
      
 }
@@ -44,8 +59,9 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
+console.log(hashmap.get('bamg'));
 // console.log(hashmap.append('yay', 'BUCKETS'));
-console.log(hashmap.bucket);
+// console.log(hashmap.bucket);
 
 /*
 Hash table
