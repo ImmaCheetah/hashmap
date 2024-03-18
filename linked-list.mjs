@@ -154,6 +154,6 @@ export function Node(key = null, value = null, nextNode = null) {
     return { key, value, nextNode }
 }
 
-let myList = LinkedList('something', 'something else');
-myList.updateValue('sometehing', 'damn');
-console.log(myList);
+// let myList = LinkedList('something', 'something else');
+// myList = null;
+// console.log(myList);

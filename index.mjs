@@ -2,11 +2,7 @@ import LinkedList from "./linked-list.mjs";
 import { Node } from "./linked-list.mjs";
 
 function HashMap() {
-    let bucket = [];
-    let bucketSize = 16;
-    for (let i = 0; i < bucketSize; i++) {
-        bucket.push(null);
-    }
+    
 
     const hash = (key) => {
         let hashCode = 0;
@@ -77,17 +73,26 @@ function HashMap() {
         let count = 0
         bucket.forEach((element) => {
             if (element != null) {
-                // console.log(element.size());
                 count += element.size();
             }
-            // console.log(element)
-            // return element.size();
         })
         return count;
     }
+
+    const clear = () => {
+        for (let i = 0; i < bucketSize; i++) {
+            bucket[i] = null;
+        }
+    }
+
+    let bucket = [];
+    let bucketSize = 16;
+    for (let i = 0; i < bucketSize; i++) {
+        bucket.push(null);
+    }
       
     return { 
-        hash, bucket, set, get, has, length
+        hash, bucket, set, get, has, length, clear
     }
      
 }
@@ -96,9 +101,9 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.length());
+console.log(hashmap.clear());
 // console.log(hashmap.append('yay', 'BUCKETS'));
-// console.log(hashmap.bucket);
+console.log(hashmap.bucket);
 
 /*
 Hash table
