@@ -28,7 +28,7 @@ export default function LinkedList(head, keyValue, ...moreValues) {
             currentNode = currentNode.nextNode;
         }
 
-        return `The number of nodes are ${count}`;
+        return count;
     }
     // Return head node
     const getHead = () => {

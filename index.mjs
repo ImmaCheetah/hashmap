@@ -64,9 +64,30 @@ function HashMap() {
         
         return false;
     }
+
+    const remove = (key) => {
+        let currentHashcode = hash(key);
+
+        if (bucket[currentHashcode] === null) return false;
+
+
+    }
+
+    const length = () => {
+        let count = 0
+        bucket.forEach((element) => {
+            if (element != null) {
+                // console.log(element.size());
+                count += element.size();
+            }
+            // console.log(element)
+            // return element.size();
+        })
+        return count;
+    }
       
     return { 
-        hash, bucket, set, get, has
+        hash, bucket, set, get, has, length
     }
      
 }
@@ -75,7 +96,7 @@ let hashmap = HashMap();
 hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.has('bam'));
+console.log(hashmap.length());
 // console.log(hashmap.append('yay', 'BUCKETS'));
 // console.log(hashmap.bucket);
 
