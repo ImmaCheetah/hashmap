@@ -15,8 +15,10 @@ function HashMap(bucketSize = 16) {
       }
     
     const set = (key, value) => {
+        if ((capacity / bucketSize) > loadFactor) {
+            growBucket();
+        }
         let currentHashcode = hash(key);
-        growBucket();
         if (bucket[currentHashcode] === null) {
             bucket[currentHashcode] = LinkedList(key, value);
             capacity++;
@@ -163,22 +165,30 @@ function HashMap(bucketSize = 16) {
     }
 
     const growBucket = () => {
-        if ((capacity / bucketSize) > loadFactor) {
-            let newHashmap = HashMap(bucketSize *= 2);
+        let tempBucket = bucket;
+        bucket = [];
 
-            bucket.forEach((element) => {
-                if (element != null) {
-                    let currentNode = element.head;
+        bucketSize *= 2;
 
-                    while (currentNode != null) {
-                        newHashmap.set(currentNode.key, currentNode.value);
-                        currentNode = currentNode.nextNode;
-                    }
-                }
-            })
-            return newHashmap;
+        for (let i = 0; i < bucketSize; i++) {
+            bucket.push(null);
         }
+
+        tempBucket.forEach((element) => {
+            if (element != null) {
+                let currentNode = element.head;
+
+                while (currentNode != null) {
+                    set(currentNode.key, currentNode.value);
+                    currentNode = currentNode.nextNode;
+                }
+            }
+        })
+    
     }
+    // check if bucket needs to grow
+    // create a new array
+    // 
     
     let bucket = [];
     let capacity = 0;
@@ -188,7 +198,7 @@ function HashMap(bucketSize = 16) {
     }
       
     return { 
-        hash, bucket, set, get, has, remove, length, clear, keys, values, entries
+        hash, bucket, set, get, has, remove, length, clear, keys, values, entries,
     }
      
 }
@@ -198,7 +208,6 @@ hashmap.set('yay', 'BUCKETS');
 hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('dgsagg', 'SOMETHING ELSE');
 hashmap.set('a', 'ANOTHER THING');
-hashmap.set('bam', 'kablooey');
 hashmap.set('bam', 'kablooey');
 hashmap.set('foo', 'bar');
 hashmap.set('hello', 'world');
@@ -213,9 +222,9 @@ hashmap.set('rain', 'umbrella');
 hashmap.set('book', 'pages');
 hashmap.set('tree', 'leaves');
 hashmap.set('ocean', 'waves');
-hashmap.set('mountain', 'peak');
-hashmap.set('guitar', 'strings');
-
+// hashmap.set('mountain', 'peak');
+// hashmap.set('guitar', 'strings');
+// newHashmap.set('asdg', 'agdah');
 // console.log(hashmap.entries());
 
 
