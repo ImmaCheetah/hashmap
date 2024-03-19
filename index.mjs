@@ -1,7 +1,7 @@
 import LinkedList from "./linked-list.mjs";
 import { Node } from "./linked-list.mjs";
 
-function HashMap() {
+function HashMap(loadFactor = 0.8) {
     
     const hash = (key) => {
         let hashCode = 0;
@@ -18,11 +18,14 @@ function HashMap() {
         let currentHashcode = hash(key);
 
         if (bucket[currentHashcode] === null) {
-            bucket[currentHashcode] = LinkedList(key, value);    
+            bucket[currentHashcode] = LinkedList(key, value);
+            capacity++;
+            console.log(capacity);
         } else if (bucket[currentHashcode].containsKey(key)) {
             bucket[currentHashcode].updateValue(key, value);
         } else {
             bucket[currentHashcode].append(key, value);
+            capacity++;
         }
     }
 
@@ -77,6 +80,7 @@ function HashMap() {
                 while (currentNode != null) {
                     if (currentNode.nextNode.key === key) {
                         currentNode.nextNode = currentNode.nextNode.nextNode;
+                        capacity--;
                         return;
                     }
                     currentNode = currentNode.nextNode;
@@ -96,7 +100,7 @@ function HashMap() {
     }
 
     const clear = () => {
-        for (let i = 0; i < capacity; i++) {
+        for (let i = 0; i < bucketSize; i++) {
             bucket[i] = null;
         }
     }
@@ -150,14 +154,22 @@ function HashMap() {
                 }
             }
         })
-
+        console.log(capacity);
         return entriesArray;
     }
 
+    const growBucket = () => {
+        if ((capacity / bucketSize) > loadFactor) {
+            for (let i = 0; i < bucketSize * 2; i++) {
+                bucket.push(null);
+            }
+        }
+    }
+
     let bucket = [];
-    let loadFactor = 0.8;
-    let capacity = 16;
-    for (let i = 0; i < capacity; i++) {
+    let capacity = 0;
+    let bucketSize = 16;
+    for (let i = 0; i < bucketSize; i++) {
         bucket.push(null);
     }
       
@@ -176,6 +188,8 @@ hashmap.set('bam', 'kablooey');
 console.log(hashmap.remove('a'));
 console.log(hashmap.bucket);
 console.log(hashmap.entries());
+
+
 
 
 
