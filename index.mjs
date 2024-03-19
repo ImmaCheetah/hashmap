@@ -1,14 +1,14 @@
 import LinkedList from "./linked-list.mjs";
 import { Node } from "./linked-list.mjs";
 
-function HashMap(loadFactor = 0.8) {
+function HashMap(bucketSize = 16) {
     
     const hash = (key) => {
         let hashCode = 0;
            
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-          hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % 16;
+          hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % bucketSize;
         }
      
         return hashCode;
@@ -16,11 +16,10 @@ function HashMap(loadFactor = 0.8) {
     
     const set = (key, value) => {
         let currentHashcode = hash(key);
-
+        growBucket();
         if (bucket[currentHashcode] === null) {
             bucket[currentHashcode] = LinkedList(key, value);
             capacity++;
-            console.log(capacity);
         } else if (bucket[currentHashcode].containsKey(key)) {
             bucket[currentHashcode].updateValue(key, value);
         } else {
@@ -154,21 +153,36 @@ function HashMap(loadFactor = 0.8) {
                 }
             }
         })
+        bucket.forEach((element) => {
+            if (element != null) {
+                console.log('yooooo', element.head.key);
+            }
+        })
         console.log(capacity);
         return entriesArray;
     }
 
     const growBucket = () => {
         if ((capacity / bucketSize) > loadFactor) {
-            for (let i = 0; i < bucketSize * 2; i++) {
-                bucket.push(null);
-            }
+            let newHashmap = HashMap(bucketSize *= 2);
+
+            bucket.forEach((element) => {
+                if (element != null) {
+                    let currentNode = element.head;
+
+                    while (currentNode != null) {
+                        newHashmap.set(currentNode.key, currentNode.value);
+                        currentNode = currentNode.nextNode;
+                    }
+                }
+            })
+            return newHashmap;
         }
     }
-
+    
     let bucket = [];
     let capacity = 0;
-    let bucketSize = 16;
+    let loadFactor = 0.8;
     for (let i = 0; i < bucketSize; i++) {
         bucket.push(null);
     }
@@ -185,12 +199,24 @@ hashmap.set('yay', 'YAYAYAYYA');
 hashmap.set('dgsagg', 'SOMETHING ELSE');
 hashmap.set('a', 'ANOTHER THING');
 hashmap.set('bam', 'kablooey');
-console.log(hashmap.remove('a'));
-console.log(hashmap.bucket);
-console.log(hashmap.entries());
+hashmap.set('bam', 'kablooey');
+hashmap.set('foo', 'bar');
+hashmap.set('hello', 'world');
+hashmap.set('apple', 'orange');
+hashmap.set('cat', 'dog');
+hashmap.set('sun', 'moon');
+hashmap.set('cookie', 'monster');
+hashmap.set('pizza', 'cheese');
+hashmap.set('banana', 'split');
+hashmap.set('coffee', 'mug');
+hashmap.set('rain', 'umbrella');
+hashmap.set('book', 'pages');
+hashmap.set('tree', 'leaves');
+hashmap.set('ocean', 'waves');
+hashmap.set('mountain', 'peak');
+hashmap.set('guitar', 'strings');
 
-
-
+// console.log(hashmap.entries());
 
 
 /*
