@@ -1,23 +1,26 @@
 import LinkedList from "./linked-list.mjs";
 import { Node } from "./linked-list.mjs";
 
+// Hashmap factory with default bucket size of 16
 function HashMap(bucketSize = 16) {
-    
+    // Hash function that uses bucket size as modulo to stay within array size
     const hash = (key) => {
         let hashCode = 0;
-           
+            
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-          hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % bucketSize;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % bucketSize;
         }
-     
+        
         return hashCode;
-      }
+    }
     
-    const set = (key, value) => {
-        if ((capacity / bucketSize) > loadFactor) {
-            growBucket();
-        }
+    // Set function takes in key value pair
+    // Checks if bucket needs to grow then hashes the key
+    // Uses hashcode to add node to array index if empty or collision, updates value if same key
+     const set = (key, value) => {
+        growBucket();
+
         let currentHashcode = hash(key);
         if (bucket[currentHashcode] === null) {
             bucket[currentHashcode] = LinkedList(key, value);
@@ -30,6 +33,7 @@ function HashMap(bucketSize = 16) {
         }
     }
 
+    // Finds the key in the hashmap and returns value
     const get = (key) => {
         let currentHashcode = hash(key);
 
@@ -47,6 +51,7 @@ function HashMap(bucketSize = 16) {
         return null;
     }
     
+    // Returns true/false if key exists in the hashmap
     const has = (key) => {
         let currentHashcode = hash(key);
 
@@ -64,6 +69,7 @@ function HashMap(bucketSize = 16) {
         return false;
     }
 
+    // Removes key by changing previous pointer of target key to the next node of target
     const remove = (key) => {
         let currentHashcode = hash(key);
 
@@ -80,6 +86,7 @@ function HashMap(bucketSize = 16) {
             } else {
                 while (currentNode != null) {
                     if (currentNode.nextNode.key === key) {
+                        // Uses next node as current node is only a reference
                         currentNode.nextNode = currentNode.nextNode.nextNode;
                         capacity--;
                         return;
@@ -90,6 +97,7 @@ function HashMap(bucketSize = 16) {
         }
     }
 
+    // Count of all the nodes in hashmap
     const length = () => {
         let count = 0
         bucket.forEach((element) => {
@@ -100,12 +108,14 @@ function HashMap(bucketSize = 16) {
         return count;
     }
 
+    // Sets every index to null
     const clear = () => {
         for (let i = 0; i < bucketSize; i++) {
             bucket[i] = null;
         }
     }
 
+    // Returns array of all keys in hashmap
     const keys = () => {
         let keysArray = [];
 
@@ -123,6 +133,7 @@ function HashMap(bucketSize = 16) {
         return keysArray;
     }
 
+    // Returns array of all values in hashmap
     const values = () => {
         let valuesArray = [];
 
@@ -140,6 +151,7 @@ function HashMap(bucketSize = 16) {
         return valuesArray;
     }
 
+    // Returns array of all key value pairs in hashmap
     const entries = () => {
         let entriesArray = [];
 
@@ -155,44 +167,44 @@ function HashMap(bucketSize = 16) {
                 }
             }
         })
-        bucket.forEach((element) => {
-            if (element != null) {
-                console.log('yooooo', element.head.key);
-            }
-        })
         console.log(capacity);
         return entriesArray;
     }
 
+    // Checks if capacity is past the load factor
+    // Sets capacity to 0 and stores main bucket in a temporary variable
+    // Doubles the size of main bucket
+    // Loops through the temp bucket as it holds all the data
+    // Adds each non empty element to the bigger bucket
     const growBucket = () => {
-        let tempBucket = bucket;
-        bucket = [];
-
-        bucketSize *= 2;
-
-        for (let i = 0; i < bucketSize; i++) {
-            bucket.push(null);
-        }
-
-        tempBucket.forEach((element) => {
-            if (element != null) {
-                let currentNode = element.head;
-
-                while (currentNode != null) {
-                    set(currentNode.key, currentNode.value);
-                    currentNode = currentNode.nextNode;
-                }
+        if ((capacity / bucketSize) > loadFactor) {
+            capacity = 0
+            let tempBucket = bucket;
+            bucket = [];
+    
+            bucketSize *= 2;
+    
+            for (let i = 0; i < bucketSize; i++) {
+                bucket.push(null);
             }
-        })
     
+            tempBucket.forEach((element) => {
+                if (element != null) {
+                    let currentNode = element.head;
+    
+                    while (currentNode != null) {
+                        set(currentNode.key, currentNode.value);
+                        currentNode = currentNode.nextNode;
+                    }
+                }
+            })
+        }
     }
-    // check if bucket needs to grow
-    // create a new array
-    // 
-    
+
     let bucket = [];
     let capacity = 0;
     let loadFactor = 0.8;
+    // Creates initial bucket
     for (let i = 0; i < bucketSize; i++) {
         bucket.push(null);
     }
@@ -225,7 +237,7 @@ hashmap.set('ocean', 'waves');
 // hashmap.set('mountain', 'peak');
 // hashmap.set('guitar', 'strings');
 // newHashmap.set('asdg', 'agdah');
-// console.log(hashmap.entries());
+console.log(hashmap.length());
 
 
 /*
