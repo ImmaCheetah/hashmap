@@ -22,6 +22,9 @@ function HashMap(bucketSize = 16) {
         growBucket();
 
         let currentHashcode = hash(key);
+
+        checkValidIndex(currentHashcode);
+
         if (bucket[currentHashcode] === null) {
             bucket[currentHashcode] = LinkedList(key, value);
             capacity++;
@@ -36,6 +39,7 @@ function HashMap(bucketSize = 16) {
     // Finds the key in the hashmap and returns value
     const get = (key) => {
         let currentHashcode = hash(key);
+        checkValidIndex(currentHashcode);
 
         if (bucket[currentHashcode] === null) return null;
 
@@ -54,6 +58,7 @@ function HashMap(bucketSize = 16) {
     // Returns true/false if key exists in the hashmap
     const has = (key) => {
         let currentHashcode = hash(key);
+        checkValidIndex(currentHashcode);
 
         if (bucket[currentHashcode] === null) return false;
 
@@ -72,6 +77,7 @@ function HashMap(bucketSize = 16) {
     // Removes key by changing previous pointer of target key to the next node of target
     const remove = (key) => {
         let currentHashcode = hash(key);
+        checkValidIndex(currentHashcode);
 
         if (bucket[currentHashcode] === null) return false;
 
@@ -113,6 +119,7 @@ function HashMap(bucketSize = 16) {
         for (let i = 0; i < bucketSize; i++) {
             bucket[i] = null;
         }
+        capacity = 0;
     }
 
     // Returns array of all keys in hashmap
@@ -167,7 +174,7 @@ function HashMap(bucketSize = 16) {
                 }
             }
         })
-        console.log(capacity);
+        // console.log(capacity);
         return entriesArray;
     }
 
@@ -198,6 +205,12 @@ function HashMap(bucketSize = 16) {
                     }
                 }
             })
+        }
+    }
+
+    const checkValidIndex = (index) => {
+        if (index < 0 || index >= bucket.length) {
+            throw new Error("Trying to access index out of bound");
         }
     }
 
@@ -238,6 +251,8 @@ hashmap.set('ocean', 'waves');
 // hashmap.set('guitar', 'strings');
 // newHashmap.set('asdg', 'agdah');
 console.log(hashmap.length());
+// console.log(hashmap.clear());
+console.log(hashmap.entries());
 
 
 /*
